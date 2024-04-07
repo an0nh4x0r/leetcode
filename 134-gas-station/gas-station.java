@@ -1,8 +1,7 @@
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int gSum = Arrays.stream(gas).sum();
-        int cSum = Arrays.stream(cost).sum();
-
+        int gSum = 0;
+        int cSum = 0;
         if (gSum < cSum) return -1;
 
         int index = 0;
@@ -13,8 +12,10 @@ class Solution {
                 totalCost = 0;
                 index = i + 1;
             }
+            gSum += gas[i];
+            cSum += cost[i];
         }
 
-        return index;        
+        return cSum > gSum ? -1 : index;        
     }
 }
