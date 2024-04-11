@@ -3,7 +3,7 @@ class Solution {
         int cmin = 0;
         int cmax = 0;
 
-        for(char c: s.toCharArray()) {
+        for (char c: s.toCharArray()) {
             if (c == '(') {
                 cmin++;
                 cmax++;
@@ -19,7 +19,6 @@ class Solution {
 
             cmin = Math.max(cmin, 0);
         }
-
-        return cmin == 0;        
+        return cmin == 0;
     }
 }
