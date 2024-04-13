@@ -1,5 +1,6 @@
 class Solution {
     public boolean checkValidString(String s) {
+
         int cmin = 0;
         int cmax = 0;
 
@@ -14,11 +15,11 @@ class Solution {
                 cmin--;
                 cmax++;
             }
+            cmin = Math.max(0, cmin);
 
             if (cmax < 0) return false;
-
-            cmin = Math.max(cmin, 0);
         }
-        return cmin == 0;
+
+        return cmin == 0;        
     }
 }
