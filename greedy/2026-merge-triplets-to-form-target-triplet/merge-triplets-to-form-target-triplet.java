@@ -1,13 +1,13 @@
 class Solution {
     public boolean mergeTriplets(int[][] triplets, int[] target) {
-        int[] r = new int[3];
+        int[] response = new int[3];
 
-        for (int[] s: triplets) {
+        for (var s: triplets) {
             if (s[0] <= target[0] && s[1] <= target[1] && s[2] <= target[2]) {
-                r = new int[] {Math.max(r[0], s[0]), Math.max(r[1], s[1]), Math.max(r[2], s[2])};
+                response = new int[] {Math.max(s[0], response[0]), Math.max(s[1], response[1]), Math.max(s[2], response[2])};
             }
         }
 
-        return Arrays.equals(target, r);
+        return Arrays.equals(target, response);        
     }
 }
