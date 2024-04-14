@@ -11,14 +11,14 @@ class Solution {
             int element = hand[i];
             if (map.getOrDefault(element, 0) > 0) {
                 map.put(element, map.get(element) - 1);
-                for (int k = 1; k < groupSize; ++k) {
+                for (int k = 0; k < groupSize - 1; ++k) {
                     element++;
                     if (map.getOrDefault(element, 0) == 0) return false;
-                    else if (map.get(element) > 0) map.put(element, map.get(element) - 1);
+                    else map.put(element, map.get(element) - 1);
                 }
             }
         }
-        
+
         return true;
     }
 }
