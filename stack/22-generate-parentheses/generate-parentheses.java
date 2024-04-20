@@ -4,28 +4,28 @@ class Solution {
     Stack<Character> stack = new Stack<>();
 
     public List<String> generateParenthesis(int n) {
-        backtrack(0, 0, n);
+        backTrack(0, 0, n);
         return res;
     }
 
-    private void backtrack(int openN, int closeN, int n) {
-        if (openN == closeN && closeN == n) {
+    private void backTrack(int open, int close, int n) {
+        if (open  == close && close == n) {
             StringBuilder sb = new StringBuilder();
-            for (Character s: stack) {
-                sb.append(s);
+            for (Character c: stack) {
+                sb.append(c);
             }
             res.add(sb.toString());
         }
 
-        if (openN < n) {
+        if (open < n) {
             stack.push('(');
-            backtrack(openN + 1, closeN, n);
+            backTrack(open + 1, close, n);
             stack.pop();
         }
 
-        if (closeN < openN) {
+        if (close < open) {
             stack.push(')');
-            backtrack(openN, closeN + 1, n);
+            backTrack(open, close + 1, n);
             stack.pop();
         }
     }
