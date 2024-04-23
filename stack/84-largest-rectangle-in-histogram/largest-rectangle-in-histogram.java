@@ -5,7 +5,6 @@ class Solution {
 
         for (int i = 0; i < heights.length; ++i) {
             int startIndex = i;
-
             while (!stack.isEmpty() && stack.peek()[1] > heights[i]) {
                 int[] temp = stack.pop();
                 int prevIndex = temp[0];
