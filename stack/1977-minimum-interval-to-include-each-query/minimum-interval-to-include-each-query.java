@@ -1,41 +1,35 @@
 class Solution {
     public int[] minInterval(int[][] intervals, int[] queries) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-        int i = 0;
-
-        Map<Integer, Integer> map = new HashMap<>();
-        int[] originalQuery = new int[queries.length];
-
-        for (int q = 0; q < queries.length; ++q) {
-            originalQuery[q] = queries[q];
-        }
+        int[] originalQueries = new int[queries.length];
+        for (int i = 0; i < queries.length; ++i) originalQueries[i] = queries[i];
 
         Arrays.sort(queries);
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
-        for (int query: queries) {
-            while (i < intervals.length && intervals[i][0] <= query) {
-                minHeap.offer(new int[]{intervals[i][1] - intervals[i][0] + 1, intervals[i][1]});
-                i++;
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] ans = new int[queries.length];
+        int j = 0;
+        for(int i = 0; i < queries.length; ++i) {
+            while (j < intervals.length && intervals[j][0] <= queries[i]) {
+                minHeap.offer(new int[] {intervals[j][1] - intervals[j][0] + 1, intervals[j][1]});
+                j++;
             }
 
-            while (!minHeap.isEmpty() && minHeap.peek()[1] < query) {
+            while (!minHeap.isEmpty() && minHeap.peek()[1] < queries[i]) {
                 minHeap.poll();
             }
 
             if (minHeap.isEmpty()) {
-                map.put(query, -1);
+                map.put(queries[i], -1);
             } else {
-                map.put(query, minHeap.peek()[0]);
+                map.put(queries[i], minHeap.peek()[0]);
             }
         }
 
-        int[] res = new int[queries.length];
+        for (int i = 0; i < originalQueries.length; ++i) ans[i] = map.get(originalQueries[i]);
 
-        for (int j = 0; j < originalQuery.length; ++j) {
-            res[j] = map.get(originalQuery[j]);
-        }
-
-        return res;
+        return ans;
     }
 }
