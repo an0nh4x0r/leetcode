@@ -17,12 +17,12 @@ class Solution {
         }
 
         while (!stack.isEmpty()) {
-            int[] temp = stack.pop();
+            int temp[] = stack.pop();
             int prevIndex = temp[0];
             int prevHeight = temp[1];
             maxArea = Math.max(maxArea, prevHeight * (heights.length - prevIndex));
         }
 
-        return maxArea;
+        return maxArea;        
     }
 }
