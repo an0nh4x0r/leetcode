@@ -1,17 +1,23 @@
 class Solution {
     public boolean isPalindrome(String s) {
-        StringBuilder sb = new StringBuilder();
+        int left = 0;
+        int right = s.length() - 1;
 
-        for (char c: s.toCharArray()) {
-            if (Character.isLetterOrDigit(c)) {
-                sb.append(Character.toLowerCase(c));
+        while (left < right) {
+
+            if (!Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            } else if (!Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            } else if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+                return false;
+            } else {
+                left++;
+                right--;
             }
+
         }
 
-        String s1 = sb.toString();
-        sb.reverse();
-        String s2 = sb.toString();
-
-        return s1.equals(s2);
+        return true;
     }
 }
