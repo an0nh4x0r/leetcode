@@ -1,6 +1,7 @@
 class Solution {
-    List<String> res = new ArrayList<>();
+
     Stack<Character> stack = new Stack<>();
+    List<String> res = new ArrayList<>();
 
     public List<String> generateParenthesis(int n) {
         backtrack(0, 0, n);
@@ -10,7 +11,9 @@ class Solution {
     private void backtrack(int open, int close, int n) {
         if (open == close && close == n) {
             StringBuilder sb = new StringBuilder();
-            for (Character c: stack) sb.append(c);
+            for (char c: stack) {
+                sb.append(c);
+            }
             res.add(sb.toString());
         }
 
