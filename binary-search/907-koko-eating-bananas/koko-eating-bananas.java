@@ -12,12 +12,13 @@ class Solution {
             }
 
             if (hour <= h) {
-                res = Math.min(res, hour);
+                res = Math.min(res, mid);
                 high = mid - 1;
+            } else {
+                low = mid + 1;
             }
-            else low = mid + 1;
         }
 
-        return low;
+        return res;
     }
 }
