@@ -1,35 +1,44 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
+        int m = nums1.length;
+        int n = nums2.length;
 
-        int m = nums1.length, n = nums2.length;
-        int left = 0, right = m;
+        if (m > n) return findMedianSortedArrays(nums2, nums1);
+
+        int total = m + n;
+        int half = (total + 1) / 2;
+
+        int left = 0;
+        int right = m;
+
+        var result = 0.0;
 
         while (left <= right) {
-            int partitionA = (left + right) / 2;
-            int partitionB = (m + n + 1) / 2 - partitionA;
+            int i = (left + right) >>> 1;
+            int j = half - i;
 
-            int maxLeftA = (partitionA == 0) ? Integer.MIN_VALUE : nums1[partitionA - 1];
-            int minRightA = (partitionA == m) ? Integer.MAX_VALUE : nums1[partitionA];
-            int maxLeftB = (partitionB == 0) ? Integer.MIN_VALUE : nums2[partitionB - 1];
-            int minRightB = (partitionB == n) ? Integer.MAX_VALUE : nums2[partitionB];
+            // get the four points around possible median
+            int left1 = (i > 0) ? nums1[i - 1] : Integer.MIN_VALUE;
+            int right1 = (i < m) ? nums1[i] : Integer.MAX_VALUE;
+            int left2 = (j > 0) ? nums2[j - 1] : Integer.MIN_VALUE;
+            int right2 = (j < n) ? nums2[j] : Integer.MAX_VALUE;
 
-            if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
-                if ((m + n) % 2 == 0) {
-                    return (
-                        (Math.max(maxLeftA, maxLeftB) + 
-                            Math.min(minRightA, minRightB)) / 2.0
-                    );
-                } else {
-                    return Math.max(maxLeftA, maxLeftB);
+            // partition is correct
+            if (left1 <= right2 && left2 <= right1) {
+                if (total % 2 == 0) { // even
+                    result = (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0;
+                } else { // odd
+                    result = Math.max(left1, left2);
                 }
-            } else if (maxLeftA > minRightB) {
-                right = partitionA - 1;
+
+                break;
+            } else if (left1 > right2) {
+                right = i - 1;
             } else {
-                left = partitionA + 1;
+                left = i + 1;
             }
         }
 
-        return 0.0;
+        return result;        
     }
 }
