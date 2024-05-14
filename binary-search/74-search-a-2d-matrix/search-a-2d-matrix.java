@@ -1,27 +1,22 @@
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-
-        int midIndex;
-        int midElement;
-        int rowIndex;
-        int colIndex;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
 
         int low = 0;
-        int high = m * n - 1;
+        int high = rows * cols - 1;
 
         while (low <= high) {
-            midIndex = (low + high) >>> 1;
-            rowIndex = midIndex / n;
-            colIndex = midIndex % n;
-            midElement = matrix[rowIndex][colIndex];
+            int mid = (low + high) >>> 1;
+            int rowIndex = mid / cols;
+            int colIndex = mid % cols;
+            int element = matrix[rowIndex][colIndex];
 
-            if (midElement > target) high = midIndex - 1;
-            else if (midElement < target) low = midIndex + 1;
+            if (element > target) high = mid - 1;
+            else if (element < target) low = mid + 1;
             else return true;
         }
-        
+
         return false;
     }
 }
