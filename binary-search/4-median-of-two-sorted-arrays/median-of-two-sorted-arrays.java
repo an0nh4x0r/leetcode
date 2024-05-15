@@ -3,31 +3,35 @@ class Solution {
         int m = nums1.length;
         int n = nums2.length;
 
-        if (m > n) return findMedianSortedArrays(nums2, nums1);
+        if (m > n)
+            return findMedianSortedArrays(nums2, nums1);
 
-        int half = (m + n + 1) / 2;
-
-        int left = 0, right = m;
+        int left = 0, right = m, halfLength = (m + n + 1) / 2;
+        var result = 0.0;
 
         while (left <= right) {
-            int p1 = (left + right) >>> 1;
-            int p2 = half - p1;
+            int partitionA = (left + right) >>> 1;
+            int partitionB = halfLength - partitionA;
 
-            int left1 = (p1 == 0) ? Integer.MIN_VALUE : nums1[p1 - 1];
-            int right1 = (p1 == m) ? Integer.MAX_VALUE : nums1[p1];
-            int left2 = (p2 == 0) ? Integer.MIN_VALUE : nums2[p2 - 1];
-            int right2 = (p2 == n) ? Integer.MAX_VALUE : nums2[p2];
+            int maxX = (partitionA == 0) ? Integer.MIN_VALUE : nums1[partitionA - 1];
+            int minX = (partitionA == m) ? Integer.MAX_VALUE : nums1[partitionA];
+            int maxY = (partitionB == 0) ? Integer.MIN_VALUE : nums2[partitionB - 1];
+            int minY = (partitionB == n) ? Integer.MAX_VALUE : nums2[partitionB];
 
-            if (left1 <= right2 && left2 <= right1) {
+            if (maxX <= minY && maxY <= minX) {
                 if ((m + n) % 2 == 0) {
-                    return (Math.max(left1, left2) + Math.min(right1, right2)) / 2d;
+                    result = (Math.max(maxX, maxY) + Math.min(minY, minX)) / 2d;
                 } else {
-                    return Math.max(left1, left2);
+                    result = Math.max(maxX, maxY);
                 }
-            } else if (left1 > right2) right = p1 - 1;
-            else left = p1 + 1;
+                break;
+            } else if (maxX > minY) {
+                right = partitionA - 1;
+            } else {
+                left = partitionA + 1;
+            }
         }
 
-        return 0.0;
+        return result;
     }
 }
