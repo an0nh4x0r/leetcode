@@ -14,7 +14,7 @@ class Solution {
             }
 
             if (hours <= h) {
-                result = Math.min(result, mid);   
+                result = mid;
                 high = mid - 1;
             } else low = mid + 1;
 
