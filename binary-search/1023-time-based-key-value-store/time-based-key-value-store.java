@@ -22,12 +22,12 @@ class TimeMap {
 
         while (low <= high) {
             int mid = (low + high) >>> 1;
+
             if (list.get(mid).getValue() <= timestamp) {
                 index = mid;
                 low = mid + 1;
-            } else {
-                high = mid - 1;
             }
+            else high = mid - 1;
         }
 
         return index != -1 ? list.get(index).getKey() : "";
