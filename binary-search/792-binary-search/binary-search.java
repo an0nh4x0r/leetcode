@@ -5,6 +5,7 @@ class Solution {
 
         while (low <= high) {
             int mid = (low + high) >>> 1;
+
             if (nums[mid] > target) high = mid - 1;
             else if (nums[mid] < target) low = mid + 1;
             else return mid;
