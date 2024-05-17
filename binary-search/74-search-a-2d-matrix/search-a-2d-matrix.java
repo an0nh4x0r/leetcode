@@ -12,10 +12,10 @@ class Solution {
             int colIndex = mid % cols;
             int midElement = matrix[rowIndex][colIndex];
 
-            if (midElement == target) return true;
-            else if (midElement > target) high = mid - 1;
-            else low = mid + 1;
-        }
+            if (midElement > target) high = mid - 1;
+            else if (midElement < target) low = mid + 1;
+            else return true;
+        } 
 
         return false;
     }
