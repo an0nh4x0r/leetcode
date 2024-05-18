@@ -1,5 +1,3 @@
-record Pair(String key, int value) {}
-
 class TimeMap {
 
     Map<String, List<Pair>> map = new HashMap<>();
@@ -18,6 +16,7 @@ class TimeMap {
         if (map.get(key) == null) return "";
 
         List<Pair> list = map.get(key);
+
         int low = 0;
         int high = list.size() - 1;
         int index = -1;
@@ -25,7 +24,7 @@ class TimeMap {
         while (low <= high) {
             int mid = (low + high) >>> 1;
 
-            if (list.get(mid).value() <= timestamp) {
+            if (list.get(mid).timestamp() <= timestamp) {
                 index = mid;
                 low = mid + 1;
             } else {
@@ -33,13 +32,15 @@ class TimeMap {
             }
         }
 
-        return index != -1 ? list.get(index).key() : "";
+        return index != -1 ? list.get(index).value() : "";
     }
 }
+
+record Pair(String value, int timestamp){}
 
 /**
  * Your TimeMap object will be instantiated and called as such:
  * TimeMap obj = new TimeMap();
- * obj.set(key, value, timestamp);
- * String param_2 = obj.get(key, timestamp);
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
  */
