@@ -10,7 +10,6 @@ class Solution {
             } else {
                 buy = sell;
             }
-
             sell += 1;
         }
 
