@@ -25,6 +25,8 @@ class Solution {
                 set.remove(s.charAt(left));
                 // decrease the size of sliding window from the left size
                 left += 1;
+                // we perform this else block unless and until all elements are unique and right pointer
+                // can be inserted
             }
         }
 
