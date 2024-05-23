@@ -1,7 +1,7 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int buy = 0;
-        int sell = 1;
+        int sell = 0;
         int maxProfit = 0;
 
         while (sell < prices.length) {
@@ -10,9 +10,9 @@ class Solution {
             } else {
                 buy = sell;
             }
-            sell += 1;
+            sell += 1; 
         }
 
-        return maxProfit;
+        return maxProfit;        
     }
 }
