@@ -21,6 +21,7 @@ class Solution {
                 // i.e. incrementing left to the positon of right
                 // this also means in future we are getting lower price, 
                 // so we move the left pointer to the lower price
+                // means we are buying low 
                 left = right;
             }
 
