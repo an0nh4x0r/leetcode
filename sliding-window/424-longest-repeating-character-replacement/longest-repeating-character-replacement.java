@@ -1,24 +1,28 @@
 class Solution {
     public int characterReplacement(String s, int k) {
-        int[] freq = new int[26];
-        int mostFreqLetter = 0;
-        int left = 0;
-        int max = 0;
+        int left = 0; // left pointer of the sliding window
+        int right = 0; // right pointer of the sliding window
+        int res = 0;
 
-        for (int right = 0; right < s.length(); right++) {
-            freq[s.charAt(right) - 'A']++;
-            mostFreqLetter = Math.max(mostFreqLetter, freq[s.charAt(right) - 'A']);
+        int[] freq = new int[26]; // frequency of characters inside the sliding window
+        int maxFreq = 0; // max frequency of an element inside the sliding window
 
-            int lettersToChange = (right - left + 1) - mostFreqLetter;
+        while (right < s.length()) {
+            freq[s.charAt(right) - 'A'] += 1;
+            maxFreq = Math.max(maxFreq, freq[s.charAt(right) - 'A']);
 
-            if (lettersToChange > k) {
-                freq[s.charAt(left) - 'A']--;
-                left++;
+            int lettersToReplace = (right - left + 1) - maxFreq;
+
+            if (lettersToReplace > k) {
+                freq[s.charAt(left) - 'A'] -= 1;
+                left += 1;
+            } else {
+                res = Math.max(res, right - left + 1); 
             }
 
-            max = Math.max(max, right - left + 1);
+            right += 1;
         }
 
-        return max;
+        return res;
     }
 }
