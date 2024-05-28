@@ -1,47 +1,39 @@
 class Solution {
     public String minWindow(String s, String t) {
-        Map<Character, Integer> map = new HashMap<>();
-
-        for (char ch: t.toCharArray()) {
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        int[] charFrequency = new int[128];
+        for (char c: t.toCharArray()) {
+            charFrequency[c]++;
         }
 
-        int matchedChars = 0;
-        int windowStart = 0;
-        int minWindowLength = s.length() + 1;
-        int minWindowStart = 0;
-        int windowEnd = 0;
+        int left = 0;
+        int right = 0;
+        int minLeft = 0;
+        int minLength = Integer.MAX_VALUE;
+        int requiredChars = t.length();
 
-        while (windowEnd < s.length()) {
-            char endChar = s.charAt(windowEnd);
+        while (right < s.length()) {
 
-            if (map.containsKey(endChar)) {
-                map.put(endChar, map.get(endChar) - 1);
-                if (map.get(endChar) == 0) {
-                    matchedChars++;
+            char rightChar = s.charAt(right);
+
+            if (charFrequency[rightChar] > 0) requiredChars--;
+            charFrequency[rightChar]--;
+
+            while (requiredChars == 0) {
+
+                if (minLength > right - left + 1) {
+                    minLength = right - left + 1;
+                    minLeft = left;
                 }
+
+                char leftChar = s.charAt(left);
+                charFrequency[leftChar]++;
+                if (charFrequency[leftChar] > 0) requiredChars++;
+                left++;
             }
 
-            // shrink the window from the start if all the characters are matched
-
-            while (matchedChars == map.size()) {
-                if (minWindowLength > windowEnd - windowStart + 1) {
-                    minWindowLength = windowEnd - windowStart + 1;
-                    minWindowStart = windowStart;
-                }
-
-                char startChar = s.charAt(windowStart++);
-                if (map.containsKey(startChar)) {
-                    if (map.get(startChar) == 0) {
-                        matchedChars--;
-                    }
-                    map.put(startChar, map.get(startChar) + 1);
-                }
-            }
-
-            windowEnd++;
+            right ++;
         }
 
-        return minWindowLength > s.length() ? "" : s.substring(minWindowStart, minWindowStart + minWindowLength);
+        return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLength);
     }
 }
