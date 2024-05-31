@@ -19,7 +19,7 @@ class Solution {
         if (root == null) return null;
 
         // Iterative DFS using stack
-        Deque<TreeNode> stack = new LinkedList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
 
         while (!stack.isEmpty()) {
