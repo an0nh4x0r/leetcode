@@ -15,26 +15,25 @@
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-
         if (root == null) return null;
 
-        // Iterative DFS using stack
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        stack.push(root);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
 
-        while (!stack.isEmpty()) {
-            var node = stack.pop();
+        while (!queue.isEmpty()) {
+            var node = queue.poll(); // FIFO - First In First Out - Iterative Breadth First Search
 
+            // swap left and right nodes
             var temp = node.left;
             node.left = node.right;
             node.right = temp;
 
             if (node.left != null) {
-                stack.push(node.left);
+                queue.offer(node.left);
             }
 
             if (node.right != null) {
-                stack.push(node.right);
+                queue.offer(node.right);
             }
         }
 
