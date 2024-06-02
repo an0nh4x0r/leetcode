@@ -19,7 +19,7 @@ class Solution {
         if (root == null) return 0;
 
         // Create a double ended queue and use it as a normal queue
-        Deque<TreeNode> deque = new LinkedList<>();
+        Deque<TreeNode> deque = new ArrayDeque<>();
         deque.offerLast(root);
 
         int maxDepth = 0;
