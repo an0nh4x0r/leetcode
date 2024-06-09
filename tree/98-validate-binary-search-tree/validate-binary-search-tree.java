@@ -15,18 +15,31 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return validate(root, null, null);
-    }
+        Deque<NodeRange> deque = new LinkedList<>();
+        deque.offerLast(new NodeRange(root, null, null));
 
-    private boolean validate(TreeNode node, Integer low, Integer high) {
-        if (node == null) {
-            return true;
+        while (!deque.isEmpty()) {
+            NodeRange nodeRange = deque.pollFirst();
+            TreeNode node = nodeRange.node();
+            Integer low = nodeRange.low();
+            Integer high = nodeRange.high();
+
+            if ((low != null && node.val <= low) || (high != null && node.val >= high)) {
+                return false;
+            }
+
+            if (node.left != null) {
+                deque.offerLast(new NodeRange(node.left, low, node.val));
+            }
+                        
+            if (node.right != null) {
+                deque.offerLast(new NodeRange(node.right, node.val, high));
+            }
+
         }
 
-        if ((low != null && node.val <= low) ||(high != null && node.val >= high)) {
-            return false;
-        }
-
-        return validate(node.left, low, node.val) && validate(node.right, node.val, high);
+        return true;
     }
 }
+
+record NodeRange(TreeNode node, Integer low, Integer high) {}
