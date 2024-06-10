@@ -16,9 +16,21 @@
 class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
-        TreeNode node = new TreeNode(root.val);
-        node.right = invertTree(root.left);
-        node.left = invertTree(root.right);
-        return node;
+
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerLast(root);
+
+        while (!deque.isEmpty()) {
+            TreeNode node = deque.pollFirst();
+            
+            TreeNode temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+
+            if (node.left != null) deque.offerLast(node.left);
+            if (node.right != null) deque.offerLast(node.right);
+        }
+
+        return root;
     }
 }
