@@ -15,45 +15,45 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offerLast(root);
 
-        while (!stack.isEmpty()) {
-            var node = stack.pop();
+        while (!queue.isEmpty()) {
+            var node = queue.pollFirst();
             if (node == null) continue;
 
-            if (isSameTree(node, subRoot)) return true;
+            if(isSameTree(node, subRoot)) return true;
 
-            stack.push(node.right);
-            stack.push(node.left);
+            queue.offerLast(node.left);
+            queue.offerLast(node.right);
         }
 
         return false;
     }
 
     private boolean isSameTree(TreeNode p, TreeNode q) {
-        Deque<TreeNode> stack1 = new LinkedList<>();
-        Deque<TreeNode> stack2 = new LinkedList<>();
+        Deque<TreeNode> queue1 = new LinkedList<>();
+        Deque<TreeNode> queue2 = new LinkedList<>();
 
-        stack1.push(p);
-        stack2.push(q);
+        queue1.offerLast(p);
+        queue2.offerLast(q);
 
-        while (!stack1.isEmpty() && !stack2.isEmpty()) {
-            var node1 = stack1.pop();
-            var node2 = stack2.pop();
+        while (!queue1.isEmpty() && !queue2.isEmpty()) {
+            var node1 = queue1.pollFirst();
+            var node2 = queue2.pollFirst();
 
-            if (node1 == null && node2 == null) {
-                continue;
+            if (node1 == null && node2 == null) continue;
+
+            if (node1 == null || node2 == null || node1.val != node2.val) {
+                return false;
             }
 
-            if (node1 == null || node2 == null || node1.val != node2.val) return false;
-
-            stack1.push(node1.right);
-            stack1.push(node1.left);
-            stack2.push(node2.right);
-            stack2.push(node2.left);
+            queue1.offerLast(node1.left);
+            queue1.offerLast(node1.right);
+            queue2.offerLast(node2.left);
+            queue2.offerLast(node2.right);
         }
 
-        return stack1.isEmpty() && stack2.isEmpty();
+        return queue1.isEmpty() && queue2.isEmpty();
     }
 }
