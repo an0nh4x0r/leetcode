@@ -15,29 +15,45 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        // while recursion if we encounter null node, return false 
-        // this will make sure that we don't do any further recursion on child nodes
-        // and recursion call will go back to parent 
-        if (root == null) return false;
-        // check if the given node is equal to the subRoot
-        if (isSameTree(root, subRoot)) return true;
-        // we first check if the left subtree is equal to the subRoot
-        // if true we have implemented OR condition so that never gets executed
-        // if false we check the right node 
-        // if both the result are false, we send false to parent, which will now perform similar recursion
-        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            var node = stack.pop();
+            if (node == null) continue;
+
+            if (isSameTree(node, subRoot)) return true;
+
+            stack.push(node.right);
+            stack.push(node.left);
+        }
+
+        return false;
     }
 
-    // Recursive DFS ... documentation for this method is available in the sameTree solution
     private boolean isSameTree(TreeNode p, TreeNode q) {
-        if (p == null && q == null) {
-            return true;
+        Deque<TreeNode> stack1 = new LinkedList<>();
+        Deque<TreeNode> stack2 = new LinkedList<>();
+
+        stack1.push(p);
+        stack2.push(q);
+
+        while (!stack1.isEmpty() && !stack2.isEmpty()) {
+            var node1 = stack1.pop();
+            var node2 = stack2.pop();
+
+            if (node1 == null && node2 == null) {
+                continue;
+            }
+
+            if (node1 == null || node2 == null || node1.val != node2.val) return false;
+
+            stack1.push(node1.right);
+            stack1.push(node1.left);
+            stack2.push(node2.right);
+            stack2.push(node2.left);
         }
 
-        if (p == null || q == null || p.val != q.val) {
-            return false;
-        }
-
-        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        return stack1.isEmpty() && stack2.isEmpty();
     }
 }
