@@ -15,22 +15,10 @@
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        if (root == null) return null;
-
-        Deque<TreeNode> deque = new LinkedList<>();
-        deque.offerLast(root);
-
-        while (!deque.isEmpty()) {
-            TreeNode node = deque.pollFirst();
-            
-            TreeNode temp = node.left;
-            node.left = node.right;
-            node.right = temp;
-
-            if (node.left != null) deque.offerLast(node.left);
-            if (node.right != null) deque.offerLast(node.right);
-        }
-
+        if (root == null) return root;
+        TreeNode temp = root.right;
+        root.right = invertTree(root.left);
+        root.left = invertTree(temp);
         return root;
     }
 }
