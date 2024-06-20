@@ -17,17 +17,17 @@ class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return root;
         Deque<TreeNode> deque = new LinkedList<>();
-        deque.offerLast(root);
+        deque.push(root);
 
         while (!deque.isEmpty()) {
-            var node = deque.pollFirst();
-            
-            var tempNode = node.right;
-            node.right = node.left;
-            node.left = tempNode;
+            var node = deque.pop();
 
-            if (node.left != null) deque.offerLast(node.left);
-            if (node.right != null) deque.offerLast(node.right);
+            var temp = node.right;
+            node.right = node.left;
+            node.left = temp;
+
+            if (node.right != null) deque.push(node.right);
+            if (node.left != null) deque.push(node.left);
         }
 
         return root;
