@@ -15,35 +15,28 @@
  */
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        if (root == null) return List.of();
+        if (root == null) return new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
 
-        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerLast(root);
 
-        Deque<TreeNode> stack = new LinkedList<>();
-        Deque<Integer> depthStack = new LinkedList<>();
+        while (!deque.isEmpty()) {
+            int dequeSize = deque.size() - 1;
+            
+            for (int i = 0; i < dequeSize; ++i) {
+                var node = deque.pollFirst();
 
-        stack.offerLast(root);
-        depthStack.offerLast(result.size());
-
-        while (!stack.isEmpty()) {
-            var node = stack.pollLast();
-            var depth = depthStack.pollLast();
-
-            if (result.size() == depth) {
-                result.add(node.val);
+                if (node.left != null) deque.offerLast(node.left);
+                if (node.right != null) deque.offerLast(node.right);
             }
 
-            if (node.left != null) {
-                stack.offerLast(node.left);
-                depthStack.offerLast(depth + 1);
-            }
-     
-            if(node.right != null) {
-                stack.offerLast(node.right);
-                depthStack.offerLast(depth + 1);
-            }
+            var rightNode = deque.pollFirst();
+            if (rightNode.left != null) deque.offerLast(rightNode.left);
+            if (rightNode.right != null) deque.offerLast(rightNode.right);
+            list.add(rightNode.val);
         }
 
-        return result;
+        return list;
     }
 }
