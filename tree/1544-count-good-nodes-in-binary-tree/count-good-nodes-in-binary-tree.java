@@ -15,30 +15,26 @@
  */
 class Solution {
     public int goodNodes(TreeNode root) {
-        Deque<NodeRange> deque = new LinkedList<>();
-        deque.offerLast(new NodeRange(root, root.val));
-        int goodNodes = 0;
+        return goodNodes(root, Integer.MIN_VALUE);
+    }
 
-        while (!deque.isEmpty()) {
-            NodeRange nodeRange = deque.pollFirst();
-            TreeNode node = nodeRange.node();
-            Integer high = nodeRange.high() > node.val ? nodeRange.high() : node.val;
+    private int goodNodes(TreeNode root, int maximum) {
+        // return 0 if the root is null
+        if (root == null) return 0;
+        
+        // node X is named good, if in the path from root to this node X
+        // there are no nodes with a value greater than X. 
+        // here maximum is the max value from the root to the current node X
+        int res = 0;
+        if (maximum <= root.val) {
+            res = 1;
+        } 
 
-            if (node != null && node.val >= high) {
-                goodNodes += 1;
-            }
+        
+        res += goodNodes(root.left, Math.max(root.val, maximum)); // go left and aggregate the count of good nodes
+        res += goodNodes(root.right, Math.max(root.val, maximum)); // go right and aggregate the count of good nodes
 
-            if (node.left != null) {
-                deque.offerLast(new NodeRange(node.left, high));
-            }
-
-            if (node.right != null) {
-                deque.offerLast(new NodeRange(node.right, high));
-            }
-        }
-
-        return goodNodes;
+        // finally return the result
+        return res;
     }
 }
-
-record NodeRange(TreeNode node, Integer high) {}
