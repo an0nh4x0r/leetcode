@@ -14,18 +14,24 @@
  * }
  */
 class Solution {
-    boolean isBalanced = true;
+    private boolean isBalanced = true;
 
     public boolean isBalanced(TreeNode root) {
-        helper(root);
+        checkHeightAndBalance(root);
         return isBalanced;
     }
 
-    private int helper(TreeNode root) {
+    private int checkHeightAndBalance(TreeNode root) {
+        // BASE CASE
         if (root == null) return 0;
-        int leftHeight = helper(root.left);
-        int rightHeight = helper(root.right);
-        if (Math.abs(rightHeight - leftHeight) > 1) isBalanced = false;
+
+        // RECURSIVE CASE
+        int leftHeight = checkHeightAndBalance(root.left);
+        int rightHeight = checkHeightAndBalance(root.right);
+
+        // verify balance condition
+        if (Math.abs(leftHeight - rightHeight) > 1) isBalanced = false;
+
         return 1 + Math.max(leftHeight, rightHeight);
     }
 }
