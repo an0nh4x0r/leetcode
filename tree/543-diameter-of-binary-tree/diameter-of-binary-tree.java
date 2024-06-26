@@ -14,22 +14,26 @@
  * }
  */
 class Solution {
-    int maxDiameter = 0;
-
+    
+    private int maxDiameter = 0;
+    
     public int diameterOfBinaryTree(TreeNode root) {
-        helper(root);
+        calculateHeight(root);
         return maxDiameter;
     }
 
-    private int helper(TreeNode root) {
+    private int calculateHeight(TreeNode root) {
+        // BASE CASE
         if (root == null) return 0;
 
-        int leftHeight = helper(root.left);
-        int rightHeight = helper(root.right);
+        // RECURSIVE CASE
+        int leftHeight = calculateHeight(root.left);
+        int rightHeight = calculateHeight(root.right);
 
-        int currentDiameter = leftHeight + rightHeight;
-        maxDiameter = Math.max(currentDiameter, maxDiameter);
+        // MAX DIAMETER CALCULATION
+        maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
 
+        // RETURN THE HEIGHT
         return 1 + Math.max(leftHeight, rightHeight);
     }
 }
