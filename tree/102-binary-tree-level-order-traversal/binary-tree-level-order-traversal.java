@@ -15,25 +15,25 @@
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        if (root == null) return new ArrayList<>();
-        List<List<Integer>> list = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
 
         Deque<TreeNode> deque = new LinkedList<>();
         deque.offerLast(root);
 
         while (!deque.isEmpty()) {
-            int dequeSize = deque.size();
-            List<Integer> innerList = new ArrayList<>();
-            for (int i = 0; i < dequeSize; ++i) {
-                var node = deque.pollFirst();
-                innerList.add(node.val);
+            int levelSize = deque.size();
+            List<Integer> currentLevel = new ArrayList<>();
+            for (int i = 0; i < levelSize; ++i) {
+                TreeNode currentNode = deque.pollFirst();
+                currentLevel.add(currentNode.val);
 
-                if (node.left != null) deque.offerLast(node.left);
-                if (node.right != null) deque.offerLast(node.right);
+                if (currentNode.left != null) deque.offerLast(currentNode.left);
+                if (currentNode.right != null) deque.offerLast(currentNode.right);
             }
-            list.add(innerList);
+            result.add(currentLevel);
         }
 
-        return list;
+        return result;
     }
 }
