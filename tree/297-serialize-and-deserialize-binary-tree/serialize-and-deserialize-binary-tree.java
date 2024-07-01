@@ -9,37 +9,43 @@
  */
 public class Codec {
 
-    public static final String NULL = "X";
-    public static final String DELIMITER = ",";
+    private static final String NULL = "X";
+    private static final String DELIMITER = ",";
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if (root == null) return NULL + DELIMITER;
-        String leftSerialized = serialize(root.left);
-        String rightSerialized = serialize(root.right);
+        StringBuilder sb = new StringBuilder();
+        serializeHelper(root, sb);
+        return sb.toString();
+    }
 
-        return root.val + DELIMITER + leftSerialized + rightSerialized;
+    private void serializeHelper(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append(NULL).append(DELIMITER);
+            return;
+        }
+
+        sb.append(root.val).append(DELIMITER);
+        serializeHelper(root.left, sb);
+        serializeHelper(root.right, sb);
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        Queue<String> nodesLeftToMaterialize = new LinkedList<>();
-        nodesLeftToMaterialize.addAll(Arrays.asList(data.split(DELIMITER)));
-        return deserializeHelper(nodesLeftToMaterialize);
+        Deque<String> queue = new LinkedList<>(Arrays.asList(data.split(DELIMITER)));
+        return deserializeHelper(queue);
     }
 
-    private TreeNode deserializeHelper(Queue<String> nodesLeftToMaterialize) {
-        String valueForNode = nodesLeftToMaterialize.poll();
-
-        if (valueForNode.equals(NULL)) {
+    private TreeNode deserializeHelper(Deque<String> nodesQueue) {
+        String value = nodesQueue.pollFirst();
+        if (NULL.equals(value)) {
             return null;
         }
 
-        TreeNode newNode = new TreeNode(Integer.valueOf(valueForNode));
-        newNode.left = deserializeHelper(nodesLeftToMaterialize);
-        newNode.right = deserializeHelper(nodesLeftToMaterialize);
-
-        return newNode;
+        TreeNode node = new TreeNode(Integer.parseInt(value));
+        node.left = deserializeHelper(nodesQueue);
+        node.right = deserializeHelper(nodesQueue);
+        return node;
     }
 }
 
