@@ -1,42 +1,67 @@
 class Solution {
     public void solveSudoku(char[][] board) {
-        if (board == null || board.length == 0) {
-            return;
-        }
-
         solve(board);
     }
 
     private boolean solve(char[][] board) {
-        for (int row = 0; row < board.length; ++row) {
-            for (int col = 0; col < board[0].length; ++col) {
-                if (board[row][col] == '.') {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') {
                     for (char num = '1'; num <= '9'; ++num) {
-                        if (isValid(board, row, col, num)) {
-                            board[row][col] = num; // put num in this cell
+                        if (isValidPlacement(board, num, i, j)) {
+                            board[i][j] = num;
 
                             if (solve(board)) {
-                                return true; // if it's the solution, return true
+                                return true;
                             } else {
-                                board[row][col] = '.'; // otherwise, reset and backtrack
+                                board[i][j] = '.';
                             }
                         }
                     }
-                    return false; // if no number from 1-9 works, return false
+                    return false;
                 }
             }
         }
-        return true; // If all cells are correctly filled, return true
+        return true;
     }
 
-    private boolean isValid(char[][] board, int row, int col, char num) {
+    private boolean isValidPlacement(char[][] board, char num, int row, int col) {
+        return !isNumberInRow(board, num, row)
+                && !isNumberInCol(board, num, col) && !isNumberInBox(board, num, row, col);
+    }
+
+    private boolean isNumberInRow(char[][] board, char num, int row) {
         for (int i = 0; i < 9; ++i) {
-            if (board[i][col] != '.' && board[i][col] == num) return false; // Check row
-            if (board[row][i] != '.' && board[row][i] == num) return false; // Check column
-            if (board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] != '.' &&
-                board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == num) return false;
+            if (board[row][i] == num) {
+                return true;
+            }
         }
 
-        return true;
+        return false;
+    }
+
+    private boolean isNumberInCol(char[][] board, char num, int col) {
+        for (int i = 0; i < 9; ++i) {
+            if (board[i][col] == num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isNumberInBox(char[][] board, char num, int row, int col) {
+        int localBoxRow = row - row % 3;
+        int localBoxCol = col - col % 3;
+
+        for (int i = localBoxRow; i < localBoxRow + 3; ++i) {
+            for (int j = localBoxCol; j < localBoxCol + 3; ++j) {
+                if (board[i][j] == num) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
