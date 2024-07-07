@@ -4,18 +4,19 @@ class Solution {
     }
 
     private boolean solve(char[][] board) {
-        for (int i = 0; i < 9; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                if (board[i][j] == '.') {
+        for (int row = 0; row < 9; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                if (board[row][col] == '.') {
                     for (char num = '1'; num <= '9'; ++num) {
-                        if (isValidPlacement(board, num, i, j)) {
-                            board[i][j] = num;
+                        if (isValidPlacement(board, num, row, col)) {
+                            board[row][col] = num;
 
                             if (solve(board)) {
                                 return true;
                             } else {
-                                board[i][j] = '.';
+                                board[row][col] = '.';
                             }
+
                         }
                     }
                     return false;
@@ -26,29 +27,31 @@ class Solution {
     }
 
     private boolean isValidPlacement(char[][] board, char num, int row, int col) {
-        return !inRow(board, num, row) && !inCol(board, num, col)
-                && !inBox(board, num, row, col);
+        return !isNumberInRows(board, num, row) && !isNumberInCols(board, num, col)
+            && !isNumberInBox(board, num, row, col);
     }
 
-    private boolean inRow(char[][] board, char num, int row) {
+    private boolean isNumberInRows(char[][] board, char num, int row) {
         for (int i = 0; i < 9; ++i) {
             if (board[row][i] == num) {
                 return true;
             }
         }
+
         return false;
     }
 
-    private boolean inCol(char[][] board, char num, int col) {
+    private boolean isNumberInCols(char[][] board, char num, int col) {
         for (int i = 0; i < 9; ++i) {
             if (board[i][col] == num) {
                 return true;
             }
         }
+
         return false;
     }
 
-    private boolean inBox(char[][] board, char num, int row, int col) {
+    private boolean isNumberInBox(char[][] board, char num, int row, int col) {
         int localRow = row - row % 3;
         int localCol = col - col % 3;
 
