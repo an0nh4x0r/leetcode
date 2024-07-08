@@ -15,8 +15,11 @@ class Solution {
         ListNode next = null;
 
         while (curr != null) {
-            next = curr.next;
-            curr.next = prev;
+            // flip the links
+            next = curr.next; // save the next node
+            curr.next = prev; // reversing process
+
+            // move the pointers
             prev = curr;
             curr = next;
         }
