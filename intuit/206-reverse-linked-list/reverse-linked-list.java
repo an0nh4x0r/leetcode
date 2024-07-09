@@ -14,10 +14,10 @@ class Solution {
             return head;
         }
 
-        ListNode reversedHead = reverseList(head.next);
+        ListNode reverseHead = reverseList(head.next);
         head.next.next = head;
         head.next = null;
 
-        return reversedHead;
+        return reverseHead;
     }
 }
